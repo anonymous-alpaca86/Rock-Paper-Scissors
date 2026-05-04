@@ -1,56 +1,40 @@
-function getComputerChoice(){
-    let choice=Math.random();
-    if (choice<0.34) return "rock";
-    else if (choice<=0.67) return "paper";
-    else return "scissors";
+let humanScore = 0;
+let computerScore = 0;
+let roundsPlayed = 0;
+
+function getComputerChoice() {
+  const choice = Math.random();
+  if (choice < 0.34) return "rock";
+  else if (choice <= 0.67) return "paper";
+  else return "scissors";
 }
 
-function getHumanChoice(){
-    let choice=prompt("Enter your choice: rock, paper or scissors");
-    choice=choice.toLowerCase();
-    if (choice==="rock" || choice==="paper" || choice==="scissors") return choice;
-    else {
-        alert("Invalid choice, try again.");
-        return getHumanChoice();
-    }
-}
+function playRound(humanChoice) {
+  const computerChoice = getComputerChoice();
+  roundsPlayed++;
 
-let humanScore=0;
-let computerScore=0;
-
-function playRound(humanChoice, computerChoice){
-if(humanChoice===computerChoice) alert("It's a tie!");
-else if(humanChoice==="rock"&&computerChoice==="paper"){
-    alert("You lost! Paper beats Rock.");
-    computerScore++;
-}
-else if(humanChoice==="paper"&&computerChoice==="scissors"){
-    alert("You lost! Scissors beats Paper.");
-    computerScore++;
-}else if(humanChoice==="scissors"&&computerChoice==="rock"){
-    alert("You lost! Rock beats Scissors.");
-    computerScore++;
-}
-else if(humanChoice==="rock"&&computerChoice==="scissors"){
-    alert("You won! Rock beats Scissors.");
+  if (humanChoice === computerChoice) alert("It's a tie!");
+  else if (
+    (humanChoice === "rock" && computerChoice === "scissors") ||
+    (humanChoice === "paper" && computerChoice === "rock") ||
+    (humanChoice === "scissors" && computerChoice === "paper")
+  ) {
+    alert("You won!");
     humanScore++;
-}else if(humanChoice==="paper"&&computerChoice==="rock"){
-    alert("You won! Paper beats Rock.");
-    humanScore++;
-}else if(humanChoice==="scissors"&&computerChoice==="paper"){
-    alert("You won! Scissors beats Paper.");
-    humanScore++;
+  } else {
+    alert("You lost!");
+    computerScore++;
+  }
+
+  if (roundsPlayed === 5) {
+    if (humanScore > computerScore) alert(`You won the game ${humanScore}:${computerScore}`);
+    else if (humanScore === computerScore) alert("It's a tie!");
+    else alert(`You lost the game ${humanScore}:${computerScore}`);
+  }
 }
 
-}
 
-function playGame(){
-    for(let i=1;i<=5;i++){
-        let human=getHumanChoice();
-        let computer=getComputerChoice();
-        playRound(human,computer);
-    }
-    if(humanScore>computerScore) return `You won ${humanScore}:${computerScore}`;
-    else if(humanScore===computerScore) return "It's a tie";
-    else return `You lost ${humanScore}:${computerScore}`;
-}
+// attach listeners to all 3 buttons once
+document.querySelector(".rock").addEventListener("click", () => playRound("rock"));
+document.querySelector(".paper").addEventListener("click", () => playRound("paper"));
+document.querySelector(".scissors").addEventListener("click", () => playRound("scissors"));
